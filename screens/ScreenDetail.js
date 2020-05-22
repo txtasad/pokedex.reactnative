@@ -97,7 +97,7 @@ class ScreenDetail extends React.Component {
 
 
   renderPokemon() {
-    const cats=this.props.cats;
+    const cats=this.props.pokemons[this.props.index];
 
     return (
         <View style={[styles.cardStyle,{flex:0.5, flexDirection: 'column',backgroundColor:'#fff',marginTop:40}]}>
@@ -107,7 +107,7 @@ class ScreenDetail extends React.Component {
             <Image source={require("../assets/images/pokeball.png")} style={{marginTop:1,opacity:0.8}}/>
             <View style={{flexDirection:'column',backgroundColor:'transparent'}}>
               <View style={{flexDirection:'row',justifyContent:'center',marginLeft:14,marginBottom:8}}>
-                <Text style={{color:'#31132E',fontSize:14,marginTop:6}}> > {cats[0].name} </Text>
+                <Text style={{color:'#31132E',fontSize:14,marginTop:6}}> > {cats.name.english} </Text>
               </View>
             </View>
 
@@ -116,13 +116,13 @@ class ScreenDetail extends React.Component {
                   <View style={[styles.redBox]}><Text style={[styles.redBoxText]}>Attack</Text></View>
               </View>
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats[0].color}</Text></View>
+                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats.base.Attack}</Text></View>
               </View>
           </View>
           <View style={{flexDirection:'row',flex:1,marginTop:16, marginBottom:16,justifyContent:'center'}}>
             
           <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats[0].breed}</Text></View>
+                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats.type.split(",")}</Text></View>
               </View>
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                   <View style={[styles.redBox]}><Text style={[styles.redBoxText]}>Type</Text></View>
