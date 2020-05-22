@@ -1,4 +1,4 @@
-import { ADD_POKE, DELETE_POKE,MOD_POKE,ALL_POKE } from './types';
+import { ADD_POKE, DELETE_POKE,MOD_POKE,ALL_POKE,ADD_INDEX } from './types';
 
 export const addPokemon = (n,t,a) => (
   {
@@ -12,7 +12,7 @@ export const addPokemon = (n,t,a) => (
 export const deletePokemon = (key) => (
   {
     type: DELETE_POKE,
-    key: key
+    id: key
   }
 );
 
@@ -31,5 +31,12 @@ export const addAllPokemon = (li) => (
     
     type: ALL_POKE,
       list: li
+  }
+);
+export const addIndex = (i) => (
+  {
+    
+    type: ADD_INDEX,
+      index: i
   }
 );

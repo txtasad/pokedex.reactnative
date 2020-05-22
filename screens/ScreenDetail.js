@@ -18,12 +18,6 @@ import {Button, Flex, Provider, WingBlank, Modal,List} from '@ant-design/react-n
 
 import {TitleOptions} from "../utils/Constants";
 
-import Toast from 'react-native-simple-toast';
-
-
-import { connect } from 'react-redux';
-import { addCat,deleteCat } from '../actions/pokemons';
-
 
 const TAG = 'PokemonDetail';
 
@@ -33,7 +27,7 @@ const widths=width-50
 const widthHalf=widths/2
 
 
-class ScreenDetail extends React.Component {
+export default class ScreenDetail extends React.Component {
 
   constructor(props) {
     super(props)
@@ -97,7 +91,9 @@ class ScreenDetail extends React.Component {
 
 
   renderPokemon() {
-    const cats=this.props.pokemons[this.props.index];
+
+    const cats=this.props.text;
+    console.log("detail ren->",this.props,cats)
 
     return (
         <View style={[styles.cardStyle,{flex:0.5, flexDirection: 'column',backgroundColor:'#fff',marginTop:40}]}>
@@ -122,7 +118,7 @@ class ScreenDetail extends React.Component {
           <View style={{flexDirection:'row',flex:1,marginTop:16, marginBottom:16,justifyContent:'center'}}>
             
           <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats.type.split(",")}</Text></View>
+                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats.type.toString()}</Text></View>
               </View>
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                   <View style={[styles.redBox]}><Text style={[styles.redBoxText]}>Type</Text></View>
@@ -130,10 +126,10 @@ class ScreenDetail extends React.Component {
           </View>
           <View style={{flexDirection:'row',flex:1,marginTop:16,marginBottom:16, justifyContent:'center'}}>
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                  <View style={[styles.redBox]}><Text style={[styles.redBoxText]}>Matches</Text></View>
+                  <View style={[styles.redBox]}><Text style={[styles.redBoxText]}>Japanese</Text></View>
               </View>
               <View style={{flex:0.5,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats[0].breed}</Text></View>
+                  <View style={[styles.grayBox]}><Text style={[styles.grayBoxText]}>{cats.name.japanese}</Text></View>
               </View>
           </View>
           
@@ -235,22 +231,3 @@ const styles = StyleSheet.create({
   grayBox:{backgroundColor:'#969BA920',padding:4,borderRadius:4,marginLeft:4,alignItems:'center'},
   grayBoxText:{color:'#000',fontSize:14},
 });
-
-
-
-const mapStateToProps = (state) => {
-  console.log("csk-> state",state);
-  return {
-    cats: state.pokeReducer.pokemonList
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    add: (name,color,breed) => dispatch(addPokemon(name,color,breed)),
-    delete: (cat) => dispatch(deletePokemon(cat))
-  }
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScreenDetail);

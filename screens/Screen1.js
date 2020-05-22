@@ -23,7 +23,7 @@ import Toast from 'react-native-simple-toast';
 
 
 import { connect } from 'react-redux';
-import { addPokemon,deletePokemon,addAllPokemon } from '../actions/pokemons';
+import { addPokemon,deletePokemon,addAllPokemon, addIndex } from '../actions/pokemons';
 //import {getData} from '../api/ApiClient';
 
 
@@ -240,7 +240,7 @@ class Screen1 extends React.Component {
               console.log(TAG, 'item', item);
               return this.tasksCardContent(item,index)
             }}
-            keyExtractor={(item)=>item.name}
+            keyExtractor={(item)=>item.id}
             style={{paddingTop : 12}}
         >
         </FlatList>
@@ -260,7 +260,7 @@ class Screen1 extends React.Component {
         <View style={{flexDirection:'row',flex:1,marginTop:4}}>
             <View style={{flex:0.3,justifyContent:'center',alignItems:'center'}}>
             <TouchableOpacity onPress={()=>{
-                  this.showScreenDetail(name.english,i);
+                  this.showScreenDetail(i);
                 }}>
               <View style={[styles.textBox,{backgroundColor:col}]}>
               <Text style={{color:'#f1f1f1',fontSize:28}}> D </Text>
@@ -269,7 +269,7 @@ class Screen1 extends React.Component {
             </View>
              <View style={{flex:0.6,justifyContent:'center',flexDirection:'column',alignItems:'center'}}>
              <TouchableOpacity onPress={()=>{
-                  this.showScreenDetail(name.englis,i);
+                  this.showScreenDetail(i);
                 }}>
                 <Text style={{color:'#f6f6f6',fontSize:16}}>{name.english}</Text>
                <Text style={{color:'#f6f6f6',fontSize:16}}>{name.chinese}</Text>
@@ -281,7 +281,8 @@ class Screen1 extends React.Component {
 
                <Text style={{color:'#4A90E2',fontSize:14,alignItems:'center',justifyContent:'center'}}></Text>
                <TouchableOpacity onPress={
-                 ()=>this.props.delete(key)
+                 ()=>{this.props.delete(id);
+                 Toast.showWithGravity('Pokemon '+name.english+' Deleted!', Toast.SHORT, Toast.BOTTOM)}
                }>
                  <Image source={require("../assets/images/delete.png")} style={{width:24,height:24}}/>
                </TouchableOpacity>
@@ -339,18 +340,17 @@ class Screen1 extends React.Component {
     });
   }
 
-  showScreenDetail = (namePoke,i) => {
+  showScreenDetail = (i) => {
     console.log(TAG, 'showScreen2')
+    const top=this.props.pokemons[i]
     Navigation.push(this.props.componentId, {
       component: {
         name: 'navigation.playground.ScreenDetail',
-        passProps: {
-          index: i
-        },
+        passProps:{text:top},
         options: {
           topBar: {
             title: {
-              text: namePoke
+              text: top.name.english
             }
           }
         }
@@ -464,7 +464,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     add: (name,color,breed) => dispatch(addPokemon(name,color,breed)),
     delete: (cat) => dispatch(deletePokemon(cat)),
-    addAll: (d)=>dispatch(addAllPokemon(d))
+    addAll: (d)=>dispatch(addAllPokemon(d)),
+    addIndex: (i)=>dispatch(addIndex(i))
   }
 }
 

@@ -15,7 +15,7 @@ import ScreenDetail from "../screens/ScreenDetail";
 function start() {
   Navigation.registerComponentWithRedux('navigation.playground.Screen1', () => Screen1,Provider,store);
   Navigation.registerComponentWithRedux('navigation.playground.Screen2', () => Screen2,Provider,store);
-  Navigation.registerComponentWithRedux('navigation.playground.ScreenDetail', () => ScreenDetail,Provider,store);
+  Navigation.registerComponent('navigation.playground.ScreenDetail', () => ScreenDetail);
   //adding other screens here
 
   Navigation.registerComponent('navigation.playground.App', () => App);

@@ -5,6 +5,10 @@ A simple React Native App using Redux for State Management to display existing P
 ## App Screens
 <p align="center">
     <img src="/media/Screen1.jpg" width="250" height="380">
+    <img src="/media/Screen3.jpg" width="250" height="380">
+</p>
+
+<p align="center">
     <img src="/media/Screen2.jpg" width="250" height="380">
 </p>
 
