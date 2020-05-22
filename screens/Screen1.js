@@ -269,7 +269,7 @@ class Screen1 extends React.Component {
             </View>
              <View style={{flex:0.6,justifyContent:'center',flexDirection:'column',alignItems:'center'}}>
              <TouchableOpacity onPress={()=>{
-                  this.showScreenDetail(name);
+                  this.showScreenDetail(name.english);
                 }}>
                 <Text style={{color:'#f6f6f6',fontSize:16}}>{name.english}</Text>
                <Text style={{color:'#f6f6f6',fontSize:16}}>{name.chinese}</Text>
@@ -298,8 +298,8 @@ class Screen1 extends React.Component {
     let valA,valB;
     if(this.state.sortby==="nameA")
     {
-      valA=a.name.toLowerCase()
-      valB=b.name.toLowerCase()
+      valA=a.name.english.toLowerCase()
+      valB=b.name.english.toLowerCase()
     }else if(this.state.sortby==="colorA")
     {
       valA=a.color.toLowerCase()

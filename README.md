@@ -17,6 +17,7 @@ A simple React Native App using Redux for State Management to display existing P
 
 ## App features
 * App shows existing pokemons.
+* Sort Pokemons by their english names in ascending or descending order
 * Navigation pannel in the bottom has 2 option to add and view only newly added pokemons.
 * Each card has option to delete existing and added pokemon.
 * App uses Redux for state management.
