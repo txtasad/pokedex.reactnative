@@ -22,7 +22,7 @@ import Toast from 'react-native-simple-toast';
 
 
 import { connect } from 'react-redux';
-import { addCat,deleteCat } from '../actions/cats';
+import { addCat,deleteCat } from '../actions/pokemons';
 
 
 const TAG = 'PokemonDetail';
@@ -237,18 +237,20 @@ const styles = StyleSheet.create({
 });
 
 
+
 const mapStateToProps = (state) => {
   console.log("csk-> state",state);
   return {
-    cats: state.catReducer.catList
+    cats: state.pokeReducer.pokemonList
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: (name,color,breed) => dispatch(addCat(name,color,breed)),
-    delete: (cat) => dispatch(deleteCat(cat))
+    add: (name,color,breed) => dispatch(addPokemon(name,color,breed)),
+    delete: (cat) => dispatch(deletePokemon(cat))
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScreenDetail);

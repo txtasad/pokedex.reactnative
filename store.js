@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux';
-import catReducer from './reducers/catReducer';
+import pokeReducer from './reducers/pokeReducer';
 
 const rootReducer = combineReducers({
-  catReducer: catReducer
+  pokeReducer: pokeReducer
 })
 
 const configureStore = () => createStore(rootReducer);

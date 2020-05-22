@@ -17,13 +17,14 @@ import {Button, Flex, Provider, WingBlank, Modal,List} from '@ant-design/react-n
 
 
 import {TitleOptions} from "../utils/Constants";
-import {getRandomColor} from "../utils/FunctionGenerator";
+import {getRandomColor,getDataUtil} from "../utils/FunctionGenerator";
 
 import Toast from 'react-native-simple-toast';
 
 
 import { connect } from 'react-redux';
-import { addCat,deleteCat } from '../actions/cats';
+import { addPokemon,deletePokemon,addAllPokemon } from '../actions/pokemons';
+//import {getData} from '../api/ApiClient';
 
 
 const TAG = 'Pokedex';
@@ -43,7 +44,7 @@ class Screen1 extends React.Component {
 
   state = {
     catAddition:false,
-    catName:"",catColor:"",catBreed:"",
+    pName:"",pType:"",pAttack:"",
     refreshing: false,
     sortby:""
   }
@@ -60,12 +61,19 @@ class Screen1 extends React.Component {
     return options
   }
 
+
+
   componentDidMount() {
     console.log("csk->","componentDidMount")
+    const d= getDataUtil().then((d)=>{
+      console.log("csk->","got data",d)
+      this.props.addAll(d)}).catch((e)=>console.log("error",e))
+    
   }
 
   setErrorState() {
     this.setState({
+      
       error: true,
       refreshing: false
     })
@@ -136,16 +144,16 @@ class Screen1 extends React.Component {
                         animationType="slide-up"
                         afterClose={() => { console.log(TAG,"afterClose") }}
                     >
-                        <List renderHeader={() => <View style={{flexDirection:"row",justifyContent:"center"}}><Text>Add a Cat</Text></View>} className="popup-list">
+                        <List renderHeader={() => <View style={{flexDirection:"row",justifyContent:"center"}}><Text>Add a Pokemon</Text></View>} className="popup-list">
                             <List.Item><Text>Name</Text><TextInput
-                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Name "} onChangeText={n=>this.state.catName=n}/></List.Item>
-                            <List.Item><Text>Color</Text><TextInput
-                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Color "} onChangeText={c=>this.state.catColor=c}/></List.Item>
-                            <List.Item><Text>Breed</Text><TextInput
-                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Breed "} onChangeText={b=>this.state.catBreed=b}/></List.Item>
+                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Name "} onChangeText={n=>this.state.pName=n}/></List.Item>
+                            <List.Item><Text>Type</Text><TextInput
+                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Type "} onChangeText={c=>this.state.pType=c}/></List.Item>
+                            <List.Item><Text>Attack</Text><TextInput
+                                style={{ height: 40, borderColor: '#969BA9', borderWidth: 1 }} placeholder={"Attack "} onChangeText={b=>this.state.pAttack=b}/></List.Item>
                             <List.Item>
                                 <Button type="primary" onPress={
-                                  ()=>{this.props.add(this.state.catName,this.state.catColor,this.state.catBreed)
+                                  ()=>{this.props.add(this.state.pName,this.state.pType,this.state.pAttack)
                                     this.setState({ catAddition: false })}
                                 }>Add</Button>
                             </List.Item>
@@ -206,11 +214,11 @@ class Screen1 extends React.Component {
 
     let dataOrders=[]
         if(this.state.sortby==="")
-          dataOrders=this.props.cats;
-    else if(this.state.sortby==="nameD" && this.props.cats!==[])
-      dataOrders=this.props.cats.reverse()
+          dataOrders=this.props.pokemons;
+    else if(this.state.sortby==="nameD" && this.props.pokemons!==[])
+      dataOrders=this.props.pokemons.reverse()
     else
-      dataOrders=this.props.cats.sort(this.sortComparison)
+      dataOrders=this.props.pokemons.sort(this.sortComparison)
 
     if(dataOrders===null || dataOrders===undefined || dataOrders.length===0) {
       return (
@@ -240,8 +248,8 @@ class Screen1 extends React.Component {
   }
 
 
-  tasksCardContent({name,breed,color,key},i) {
-    if (name===null || breed===undefined || color===null) {
+  tasksCardContent({name,id,type,base},i) {
+    if (name===null || type===undefined) {
       return this.getErrorStateForCards()
     }
     const col=i%2!==0?"#CBCE91FF":"#EA738DFF"
@@ -252,18 +260,20 @@ class Screen1 extends React.Component {
         <View style={{flexDirection:'row',flex:1,marginTop:4}}>
             <View style={{flex:0.3,justifyContent:'center',alignItems:'center'}}>
             <TouchableOpacity onPress={()=>{
-                  this.showScreenDetail(name);
+                  this.showScreenDetail(name.english);
                 }}>
               <View style={[styles.textBox,{backgroundColor:col}]}>
               <Text style={{color:'#f1f1f1',fontSize:28}}> D </Text>
               </View>
               </TouchableOpacity>
             </View>
-             <View style={{flex:0.6,justifyContent:'center',flexDirection:'row',alignItems:'center'}}>
+             <View style={{flex:0.6,justifyContent:'center',flexDirection:'column',alignItems:'center'}}>
              <TouchableOpacity onPress={()=>{
                   this.showScreenDetail(name);
                 }}>
-               <Text style={{color:'#f6f6f6',fontSize:16}}>{name}</Text>
+                <Text style={{color:'#f6f6f6',fontSize:16}}>{name.english}</Text>
+               <Text style={{color:'#f6f6f6',fontSize:16}}>{name.chinese}</Text>
+               <Text style={{color:'#f6f6f6',fontSize:16}}>{name.french}</Text>
                </TouchableOpacity>
                </View>
 
@@ -294,10 +304,6 @@ class Screen1 extends React.Component {
     {
       valA=a.color.toLowerCase()
       valB=b.color.toLowerCase()
-    }else if(this.state.sortby==="breedA")
-    {
-      valA=a.breed.toLowerCase()
-      valB=b.breed.toLowerCase()
     }
 
     if (valA < valB) //sort string ascending
@@ -447,14 +453,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   console.log("csk-> state",state);
   return {
-    cats: state.catReducer.catList
+    pokemons: state.pokeReducer.pokemonList
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: (name,color,breed) => dispatch(addCat(name,color,breed)),
-    delete: (cat) => dispatch(deleteCat(cat))
+    add: (name,color,breed) => dispatch(addPokemon(name,color,breed)),
+    delete: (cat) => dispatch(deletePokemon(cat)),
+    addAll: (d)=>dispatch(addAllPokemon(d))
   }
 }
 
