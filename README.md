@@ -1,4 +1,4 @@
-# PiczillaMVVM
+# PokedexReactNative
 
 A simple React Native App using Redux for State Management to display existing Pokemons and with functionality to add and delete new Pokemons. Clicking on pokemon name gives additional detail.
 
